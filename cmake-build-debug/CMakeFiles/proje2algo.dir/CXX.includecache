@@ -6,11 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/d/GitKrakenRepository/FindALi/main.cpp
+/cygdrive/d/GitKrakenRepository/Algorithm/main.cpp
 iostream
 -
 vector
 -
 fstream
+-
+ctime
+-
+chrono
 -
 

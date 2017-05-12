@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/cygdrive/d/GitKrakenRepository/FindALi/main.cpp" "/cygdrive/d/GitKrakenRepository/FindALi/cmake-build-debug/CMakeFiles/proje2algo.dir/main.cpp.o"
+  "/cygdrive/d/GitKrakenRepository/Algorithm/main.cpp" "/cygdrive/d/GitKrakenRepository/Algorithm/cmake-build-debug/CMakeFiles/proje2algo.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

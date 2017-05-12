@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <ctime>
+#include <chrono>
 
+#define TESTCHAR '0'
 
 using namespace std;
-
-
 
 class algoritma{
 
@@ -14,28 +15,145 @@ public:
 
     }
 
+    void findAliBruteForce(){
+        for (int i = 0; i <getHeight() ; ++i) {
+            for (int j = 0; j <getWidth() ; ++j) {
+               if( isAli(getFileData(i).at(j),i,j) == -1)
+                   return;
+            }
+        }
+    }
+
+
+    /* Algroitma dosyanın ortasından başlayarak
+   * giderek büyüyen dikdörtgenler  çizerek kontrol edicek
+   * vision kısmından gelen onay komutu ile işlemi sonlandıracak
+   * */
+
+
     void findAli(){
 
+        int staticVariable = 1;
+
         //mid point belirle
-        int w = getWeight();
-        int h = getHeight();
-        int xMid = 0,yMid= 0 ;
+        int w = getWidth()  - 1;
+        int h = getHeight() - 1;
+        int hMid = h /2 ,wWith= w/2  ;
 
-        if(h %2 == 0 ){
+        int positionH = hMid ,positionW = wWith;
 
-        }else{
+        //cout <<hMid << endl;
+        //cout << wWith << endl;
+
+        int counter = 0;
+                //ilk parametre satır
+                //2.parametre sütün
+
+          //  cout << getFileData(11).at(12)<< endl;
+
+        isAli(getFileData(positionH).at(positionW),positionH,positionW);
+
+        while (1){
+
+            ++staticVariable;
+
+
+            //sağ üst 1 satır
+            --positionH;
+            ++positionW;
+
+            if(positionW < h  && positionW < w && positionW > 0  && positionW > 0){
+                cout << "sınırlardayız "<<endl;
+                break;
+            }
+            cout << "Static Variable " << staticVariable << endl;
+
+
+            //sağ dan sola
+
+            for (int i = 0; i < staticVariable ; ++i){
+
+                cout << "comiic soon --> Left "<< endl;
+                cout << positionH << endl;
+                cout << positionW<< endl;
+                cout << getFileData(positionH).at(positionW)<< endl;
+
+                isAli(getFileData(positionH).at(positionW),positionH,positionW);
+
+                //FileData[positionH][positionW]= 'X';
+
+                --positionW;
+            }
+
+
+
+
+            //yukar  -> aşağı
+
+
+            for (int j = 0; j <staticVariable ; ++j) {
+
+                cout << "comiic soon --> Down "<< endl;
+                cout << positionH << endl;
+                cout << positionW<< endl;
+                cout << getFileData(positionH).at(positionW)<< endl;
+
+                isAli(getFileData(positionH).at(positionW),positionH,positionW);
+                //FileData[positionH][positionW]= 'X';
+
+                ++positionH;
+
+            }
+
+            //soldan sağa
+
+
+            for (int k = 0; k < staticVariable; ++k) {
+
+                cout << "comiic soon --> Right "<< endl;
+                cout << positionH << endl;
+                cout << positionW<< endl;
+                cout << getFileData(positionH).at(positionW)<< endl;
+
+                ++positionW;
+                isAli(getFileData(positionH).at(positionW),positionH,positionW);
+                //FileData[positionH][positionW]= 'X';
+
+            }
+
+            //yukarı
+            for (int l = 0; l < staticVariable; ++l) {
+
+                cout << "comiic soon --> Up "<< endl;
+                cout << positionH << endl;
+                cout << positionW<< endl;
+                cout << getFileData(positionH).at(positionW)<< endl;
+                --positionH;
+                isAli(getFileData(positionH).at(positionW),positionH,positionW);
+              //  FileData[positionH][positionW]= 'X';
+
+            }
 
         }
-        if(w %2 == 0 ){
+     /*   cout << counter << endl;
+        cout << h << endl;
+        cout << w << endl;
+*/
 
-        }else{
-
-        }
-
+      //  cout << w << endl;
 
 
     }
 
+
+    int isAli(char c,int h,int w ){
+        if(getFileData(h).at(w) == TESTCHAR){
+            cout << "Ali Found at " << h << "  and "<< w <<endl;
+            return -1;
+
+        }
+
+    }
 
     //read from file write FileData variable
     void readTestfile( char* filename){
@@ -51,11 +169,12 @@ public:
             {
                 //cout << line << '\n';
                 FileData.push_back(line);
+                setWidth(line.size());
+
             }
             myfile.close();
 
             setHeight(FileData.size());
-            setWeight(line.size());
         }
 
         else cout << "Unable to open file";
@@ -69,16 +188,12 @@ public:
     }
 
 
-private:
-    vector <string> FileData;
-    int weight ;
-public:
-    int getWeight() const {
-        return weight;
+    int getWidth() const {
+        return Width;
     }
 
-    void setWeight(int weight) {
-        algoritma::weight = weight;
+    void setWidth(int Width) {
+        algoritma::Width = Width;
     }
 
     int getHeight() const {
@@ -89,8 +204,15 @@ public:
         algoritma::height = height;
     }
 
+    const string getFileData(int index) const {
+        return FileData[index];
+    }
+
+
 private:
+    int Width ;
     int height ;
+    vector <string> FileData;
 
 
 
@@ -104,7 +226,14 @@ int main() {
     algoritma a;
 
     a.readTestfile(myfile);
-    a.printData();
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+    a.findAliBruteForce();
+    std::chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
+
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() <<std::endl;
+
+   // a.printData();
 
     return 0;
 }
