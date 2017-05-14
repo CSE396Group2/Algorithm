@@ -135,20 +135,16 @@ public:
             }
 
         }
-     /*   cout << counter << endl;
-        cout << h << endl;
-        cout << w << endl;
-*/
-
-      //  cout << w << endl;
 
 
     }
-
-
+    void clearData(){
+        // erase all elements:
+        FileData.erase (FileData.begin(),FileData.end());
+    }
     int isAli(char c,int h,int w ){
         if(getFileData(h).at(w) == TESTCHAR){
-            cout << "Ali Found at " << h << "  and "<< w <<endl;
+            cout << "Ali Found at row " << h+1 << "  and  column "<< w+1 <<endl;
             return -1;
 
         }
@@ -188,6 +184,20 @@ public:
     }
 
 
+    void testingAlgorithm(char* filename){
+
+        readTestfile(filename);
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+        findAliBruteForce();
+        chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
+
+        cout << "(nanoseconds ) Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count()<<"\n" <<std::endl;
+        clearData();
+    }
+
+
+
     int getWidth() const {
         return Width;
     }
@@ -223,15 +233,13 @@ private:
 int main() {
 
     char* myfile ("test.txt");
+    char* myfile1 ("test1.txt");
+
     algoritma a;
 
-    a.readTestfile(myfile);
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    a.testingAlgorithm(myfile);
 
-    a.findAliBruteForce();
-    std::chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
-
-    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() <<std::endl;
+    a.testingAlgorithm(myfile1);
 
    // a.printData();
 
